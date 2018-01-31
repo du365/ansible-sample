@@ -1,0 +1,21 @@
+---
+
+- name: confirm centos version
+  command: cat /etc/redhat-release
+  register: cat
+  check_mode: no
+
+- debug:
+    msg: "{{cat.stdout}}"
+
+- name: set timezone to Asia/Tokyo
+  timezone:
+    name: Asia/Tokyo
+
+- name: disable selinux
+  selinux:
+    state: disabled
+
+- name: Set up iptables rules
+  copy: src=iptables-save dest=/etc/sysconfig/iptables
+  notify: restart iptables

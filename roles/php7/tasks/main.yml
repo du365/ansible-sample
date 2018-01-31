@@ -1,0 +1,28 @@
+---
+
+- name: install remi repo
+  yum:
+    name: https://rpms.remirepo.net/enterprise/remi-release-6.rpm
+    state: present
+
+- name: check if php5.3 existing
+  command: php -v
+  register: php_check
+  ignore_errors: yes
+  check_mode: no
+
+- name: uninstall php5.3
+  yum: name="{{ item }}" state=absent
+  with_items:
+    - php
+    - php-*
+  when: (php_check|success and php_check.stdout.find('PHP 5.3') == 0)
+
+- name: install php7.1
+  yum: name="{{ item }}" state=present enablerepo="remi,remi-php71"
+  with_items:
+    - php
+    - php-mbstring
+    - php-mysqlnd
+    - php-gd
+    - php-fpm
