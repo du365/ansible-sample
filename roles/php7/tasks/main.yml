@@ -5,7 +5,7 @@
     name: https://rpms.remirepo.net/enterprise/remi-release-6.rpm
     state: present
 
-- name: check if php5.3 existing
+- name: check if php5.3 is installed
   command: php -v
   register: php_check
   ignore_errors: yes
@@ -21,8 +21,7 @@
 - name: install php7.1
   yum: name="{{ item }}" state=present enablerepo="remi,remi-php71"
   with_items:
-    - php
+    - php-fpm
     - php-mbstring
     - php-mysqlnd
     - php-gd
-    - php-fpm

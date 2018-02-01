@@ -1,0 +1,21 @@
+---
+
+- name: remove apache
+  yum:
+    name: httpd
+    state: removed
+
+- name: Set up nginx repo
+  copy: src=nginx.repo dest=/etc/yum.repos.d/nginx.repo
+
+- name: install nginx
+  yum:
+    name: nginx
+    state: present
+  when:
+
+- name: start nginx
+  service:
+    name: nginx
+    state: started
+    enabled: yes
