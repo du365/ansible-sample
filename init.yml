@@ -1,0 +1,10 @@
+---
+- hosts: all
+  vars:
+    username: www
+
+  roles:
+    - chrony
+    - users
+    - tools
+    - ssh

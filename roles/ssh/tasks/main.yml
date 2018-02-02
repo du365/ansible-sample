@@ -1,0 +1,11 @@
+---
+- name: disable root login
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - {regexp: '^#?PermitRootLogin', line: 'PermitRootLogin no'}
+    - {regexp: '^#?PasswordAuthentication', line: 'PasswordAuthentication no'}
+    - {regexp: '^#Port', line: 'Port 10022'}
+  notify: restart sshd

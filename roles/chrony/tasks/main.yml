@@ -1,0 +1,26 @@
+---
+- name: install chrony
+  yum:
+    name: chrony
+    state: present
+
+- name: set chrony.conf
+  replace:
+    path: /etc/chrony.conf
+    regexp: '^(server \d\.centos.*)'
+    replace: '#\1'
+
+- name: set ntp.nict.jp
+  lineinfile:
+    path: /etc/chrony.conf
+    line: "server ntp.nict.jp iburst"
+
+- name: start chronyd
+  service:
+    name: chronyd
+    state: started
+    enabled: yes
+
+- name: set timezone to Asia/Tokyo
+  timezone:
+    name: Asia/Tokyo
